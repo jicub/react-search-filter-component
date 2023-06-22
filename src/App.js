@@ -3,38 +3,48 @@ import Recipe from './component/recipe';
 import './App.css';
 
 const App = () => {
-	const APP_KEY = '48ec59b90415bf89982c9055b5a84d5d';
+	const APP_KEY = ''
 	
-	const [recipes, setRecipes] = useState([]);
-	const [search, setSearch] = useState("");
-	const [query, setQuery] = useState("");
+	const [recipes, setRecipes] = useState([])
+	const [search, setSearch] = useState("")
+	const [query, setQuery] = useState("")
 	
 	useEffect (() => {
-		getRecipe();
-	}, [query]);
+		getRecipe()
+	}, [query])
 
 	const getRecipe = async () => {
-		const response = await fetch(`https://www.food2fork.com/api/search?key=${APP_KEY}&q=${query}`);
-		const data = await response.json();
-		setRecipes(data.recipes);
-		console.log(data);
-	};
+		
+		const response = await fetch(`https://forkify-api.herokuapp.com/api/search?key=${APP_KEY}&q=${query}`)
+		const data = await response.json()
+
+		if(!data.recipes){
+			return
+		}
+		
+		setRecipes(data.recipes)
+		console.log(data)
+	}
 
 	const updateSearch = e => {
 		try{
-			setSearch(e.target.value);
-			console.log(e.target.value + ' Success');
+			setSearch(e.target.value)
+			console.log(e.target.value + ' Success')
 		} catch (e) {
-			console.log(e + ' Fail');
+			console.log(e + ' Fail')
 		}
 		
-	};
+	}
+
+	const noResults = () => {
+
+	}
 
 	const getSearch = e => {
-		e.preventDefault();
-		setQuery(search);
-		console.log('getSearch success!');
-	};
+		e.preventDefault()
+		setQuery(search)
+		console.log('getSearch success!')
+	}
 
 	return (
 		<div className="App"> 
@@ -51,7 +61,8 @@ const App = () => {
 					url={recipe.source_url} 
 					image={recipe.image_url}
 				/>
-			))};
+			))}
+
 		</div>
 	);
 };
