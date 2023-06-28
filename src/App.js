@@ -43,11 +43,9 @@ const App = () => {
 		
 	}
 
-	const itemsExist = (itemsAvail) => {
-
-		setErrorMsg(itemsAvail)
-		
-		// console.log('boom! ' + result)
+	const itemsExist = (items) => {
+		//Sets boolean value on returned entries from get request
+		setErrorMsg(items)
 	}
 
 	const getSearch = e => {
@@ -65,7 +63,7 @@ const App = () => {
 				<button className="search-button" type="submit">Search</button>
 			</form>
 
-			{ showErrorMsg ? null : <p>No results!</p> }
+			{ showErrorMsg ? null : <div><p>No results found! <a href="https://forkify-api.herokuapp.com/phrases.html" target="_blank">See available search words.</a></p></div> }
 			
 			{recipes.map(recipe =>(
 				
