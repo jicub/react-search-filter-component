@@ -8,9 +8,11 @@ const App = () => {
 	const [recipes, setRecipes] = useState([])
 	const [search, setSearch] = useState("")
 	const [query, setQuery] = useState("")
+	const [showErrorMsg, setErrorMsg] = useState(false)
 	
 	useEffect (() => {
 		getRecipe()
+
 	}, [query])
 
 	const getRecipe = async () => {
@@ -19,31 +21,40 @@ const App = () => {
 		const data = await response.json()
 
 		if(!data.recipes){
-			return
+			itemsExist(false)
+			setRecipes([])
+			return 
 		}
 		
+		itemsExist(true)
+
 		setRecipes(data.recipes)
-		console.log(data)
+		
+		console.log(data.recipes.length)
 	}
 
 	const updateSearch = e => {
 		try{
 			setSearch(e.target.value)
-			console.log(e.target.value + ' Success')
+			console.log(e.target.value + ' update search')
 		} catch (e) {
 			console.log(e + ' Fail')
 		}
 		
 	}
 
-	const noResults = () => {
+	const itemsExist = (itemsAvail) => {
 
+		setErrorMsg(itemsAvail)
+		
+		// console.log('boom! ' + result)
 	}
 
 	const getSearch = e => {
 		e.preventDefault()
 		setQuery(search)
-		console.log('getSearch success!')
+		
+		console.log('ping!')
 	}
 
 	return (
@@ -53,14 +64,17 @@ const App = () => {
 				<input onChange={updateSearch} className="search-bar" type="text"/>
 				<button className="search-button" type="submit">Search</button>
 			</form>
+
+			{ showErrorMsg ? null : <p>No results!</p> }
 			
 			{recipes.map(recipe =>(
+				
 				<Recipe 
 					key={recipe.title}
 					title={recipe.title} 
 					url={recipe.source_url} 
 					image={recipe.image_url}
-				/>
+				/> 
 			))}
 
 		</div>
